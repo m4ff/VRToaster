@@ -17,4 +17,5 @@ rightToast.Hide();
 rightToast.Destroy();
 
 // Show an error message for 5 seconds
-Toaster.TimedToast(ToastGroup.Frontal, "An error occurred", 5, "error");```
+Toaster.TimedToast(ToastGroup.Frontal, "An error occurred", 5, "error");
+```
