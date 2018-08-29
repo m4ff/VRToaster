@@ -73,17 +73,8 @@ namespace VRToaster
 
         [SerializeField] Style[] styles = new Style[] { new Style("default") };
 
-
-        //RectTransform leftTransform;
-        //RectTransform rightTransform;
-        //RectTransform frontalTransform;
-
         RectTransform[] toastRoots = new RectTransform[3];
         int[] visibleToastCount = new int[3];
-
-        //int leftVisibleCount;
-        //int rightVisibleCount;
-        //int frontalVisibleCount;
 
         readonly System.Type[] WrapperComponentList = new System.Type[] { typeof(Canvas), typeof(VerticalLayoutGroup), typeof(ContentSizeFitter) };
         readonly System.Type[] CardWrapperComponentList = new System.Type[] { typeof(CanvasGroup), typeof(ScalableHorizontalLayoutGroup) };
@@ -102,23 +93,6 @@ namespace VRToaster
         int currentFontSize;
         int currentPadding;
         int currentDensity;
-
-        //internal void UpdateVisibility(RectTransform t, int i)
-        //{
-        //    var parent = t.parent;
-        //    if (parent == frontalTransform)
-        //    {
-        //        frontalVisibleCount += i;
-        //    }
-        //    else if(parent == leftTransform)
-        //    {
-        //        leftVisibleCount += i;
-        //    }
-        //    else
-        //    {
-        //        rightVisibleCount += i;
-        //    }
-        //}
 
         void OnValidate()
         {
@@ -322,16 +296,6 @@ namespace VRToaster
             return MakeToast(group, null, style, ToastPosition.Bottom);
         }
 
-        //public static Toast MakeToast(Group group, string text, Position position)
-        //{
-        //    return MakeToast(group, text, singleton.styles[0].Name, position);
-        //}
-
-        //public static Toast MakeToast(Group group, string text)
-        //{
-        //    return MakeToast(group, text, singleton.styles[0].Name, Position.Bottom);
-        //}
-
         public static void TimedToast(ToastGroup group, string text, float time, string style, ToastPosition position)
         {
             if (time <= 0)
@@ -356,16 +320,6 @@ namespace VRToaster
         {
             TimedToast(group, text, time, style, ToastPosition.Bottom);
         }
-
-        //public static void TimedToast(Group group, string text, float time, Position position)
-        //{
-        //    TimedToast(group, text, time, singleton.styles[0].Name, position);
-        //}
-
-        //public static void TimedToast(Group group, string text, float time)
-        //{
-        //    TimedToast(group, text, time, singleton.styles[0].Name, Position.Bottom);
-        //}
 
         internal static IEnumerator CoAnimateToast(RectTransform toast, float target, System.Action cb = null)
         {
@@ -415,52 +369,6 @@ namespace VRToaster
             visibleToastCount[rootIndex] += increment;
         }
 
-        //static IEnumerator CoShowToast(RectTransform toast)
-        //{
-        //    var parent = toast.parent as RectTransform;
-        //    var group = toast.GetComponent<CanvasGroup>();
-        //    var scale = toast.localScale;
-        //    float elapsed = AnimationTime * scale.y;
-
-        //    while (elapsed < AnimationTime)
-        //    {
-        //        elapsed += Time.deltaTime;
-        //        float t = elapsed / AnimationTime;
-        //        scale.y = Mathf.Clamp01(t);
-        //        group.alpha = t;
-
-        //        toast.localScale = scale;
-        //        toast.ForceUpdateRectTransforms();
-
-        //        LayoutRebuilder.MarkLayoutForRebuild(toast);
-
-        //        yield return null;
-        //    }
-        //}
-
-        //static IEnumerator CoHideToast(RectTransform toast)
-        //{
-        //    var parent = toast.parent as RectTransform;
-        //    var group = toast.GetComponent<CanvasGroup>();
-        //    var scale = toast.localScale;
-        //    float elapsed = AnimationTime * scale.y;
-
-        //    while (elapsed > 0)
-        //    {
-        //        elapsed -= Time.deltaTime;
-        //        float t = elapsed / AnimationTime;
-        //        scale.y = Mathf.Clamp01(t);
-        //        group.alpha = t;
-
-        //        toast.localScale = scale;
-        //        toast.ForceUpdateRectTransforms();
-
-        //        LayoutRebuilder.MarkLayoutForRebuild(toast);
-
-        //        yield return null;
-        //    }
-        //}
-
         static IEnumerator CoTimedToast(RectTransform toast, float time)
         {
             yield return singleton.StartCoroutine(CoAnimateToast(toast, 1));
@@ -489,22 +397,6 @@ namespace VRToaster
 
             var pos = headPos + dir;
             var rot = Quaternion.LookRotation(dir, up);
-
-            msg.SetPositionAndRotation(pos, rot);
-            msg.ForceUpdateRectTransforms();
-        }
-
-        void UpdateHandTransform1(RectTransform msg, Transform controller, float sign)
-        {
-            var headPos = headTransform.position;
-            var dir = controller.position - headPos;
-
-            var up = playAreaTransform.up;
-            var step = Quaternion.AngleAxis(sign * handToastAngle, up);
-
-            var newDir = step * dir;
-            var pos = headPos + newDir;
-            var rot = Quaternion.LookRotation(newDir, up);
 
             msg.SetPositionAndRotation(pos, rot);
             msg.ForceUpdateRectTransforms();
@@ -554,11 +446,6 @@ namespace VRToaster
                 UpdateFrontTransform(false);
             }
         }
-
-        //void UpdateToastTransforms(bool reset)
-        //{
-
-        //}
     }
 
     class ScalableHorizontalLayoutGroup : HorizontalLayoutGroup
